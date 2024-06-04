@@ -1,5 +1,5 @@
 export const sqlConfig = {
-    server: '192.168.1.47',
+    server: '192.168.1.31',
     port: 1433,
     user: 'sa',
     password: 'VeryStr0ngP@ssw0rd',
