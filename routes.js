@@ -15,7 +15,7 @@ router.post('/login', async (req, res)=>{
             const { recordset } = await pool.query`select id, nome from Usuario where email = ${email} and senha = ${senha}`;
             if(recordset.length == 0)
             {
-                return res.status(401).json('usuario ou senha incorreta')
+                return res.status(204).json('usuario ou senha incorreta')
             }
 
             return res.status(200).json(recordset)
@@ -48,6 +48,15 @@ router.post('/user/novo', async(req, res)=>{
             return res.status(409).json('Email ja cadastrado!')
         }
         return res.status(500).json('Error on server!')
+    }
+})
+
+router.get('/salas', async (req, res)=>{
+    try {
+        const {recordset} = await pool.query`select * from Sala`
+        return res.status(200).json(recordset)
+    } catch (error) {
+        return res.status(500).json('error...')
     }
 })
 
