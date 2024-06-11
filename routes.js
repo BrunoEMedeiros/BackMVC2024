@@ -23,7 +23,6 @@ router.post('/login', async (req, res)=>{
             return res.status(400).json("bad request")
     } 
     catch (error){
-        console.log(error)
         return res.status(500).json('Error on server!')
     }
 })
@@ -31,7 +30,6 @@ router.post('/login', async (req, res)=>{
 router.post('/user/novo', async(req, res)=>{
     try{
         const {nome, email, senha} = req.body;
-        console.log(nome, email, senha)
         if(nome != null && nome != "" && email != null && email != "" &&
             senha != null && senha != "")
         {
