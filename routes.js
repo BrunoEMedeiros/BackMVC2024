@@ -67,4 +67,40 @@ router.get('/horarios', async(req, res)=>{
     }
 })
 
+router.post('/agendamento/novo', async(req, res)=>{
+    try {
+        const{ desc, id_usuario, id_sala} = req.body;
+        //Aqui eu insiro o registro na tabela agendamento
+        await pool.query`insert into Agendamento values(${desc},${id_usuario},${id_sala},1)`
+
+        /*
+            Para que eu possa inserir dentro da tabela Agendamento_Horario eu preciso de duas
+            informações o id do Agendamento e o id do Horario, pra facilitar minha vida, quando
+            alguem chamar essa rota, cadastra o Agendamento e recebe o id gerado pelo banco como
+            resposta
+        */
+
+        const { recordset } = await pool.query`SELECT IDENT_CURRENT('Agendamento') AS UltimoID;`
+        //UltimoID é só um apelido qualquer que eu usei só pra guardar o valor do id gerado
+
+        const { UltimoID } = recordset[0]
+        return res.status(200).json(UltimoID)
+    } catch (error) {
+        return res.status(500).json('error...')
+    }
+})
+
+router.post('/agendamento/horarios', async (req, res)=>{
+    try {
+        const{ id_agendamento, id_horarios } = req.body;
+        id_horarios.map( async (id)=>
+            await pool.query`insert into Agentamento_Horario values(${id}, ${id_agendamento})`
+        )
+        return res.status(200).json('horario(s) agendado')
+    } catch (error) {
+        return res.status(500).json('error...') 
+    }
+})
+
+
 export default router
